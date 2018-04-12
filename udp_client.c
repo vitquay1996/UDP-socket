@@ -10,7 +10,9 @@ void tv_sub(struct  timeval *out, struct timeval *in);	    //calcu the time inte
 int main(int argc, char **argv)
 {
 	int sockfd, ret;
+	int i;
 	float ti, rt;
+	float tiSum, rtSum;
 	long len;
 	struct sockaddr_in ser_addr;
 	char ** pptr;
@@ -64,10 +66,18 @@ int main(int argc, char **argv)
 		printf("File doesn't exit\n");
 		exit(0);
 	}
-
-	ti = str_cli(fp, sockfd, (struct sockaddr *)&ser_addr, sizeof(struct sockaddr_in), &len);                       //perform the transmission and receiving
-	rt = (len/(float)ti);                                         //caculate the average transmission rate
-	printf("Time(ms) : %.3f, Data sent(byte): %d\nData rate: %f (Kbytes/s)\n", ti, (int)len, rt);
+	tiSum = 0;
+	rtSum = 0;
+	for (i=0; i< 9; i++) {
+		ti = str_cli(fp, sockfd, (struct sockaddr *)&ser_addr, sizeof(struct sockaddr_in), &len);                       //perform the transmission and receiving
+		rt = (len/(float)ti);                                         //caculate the average transmission rate
+		tiSum += ti;
+		rtSum += rt;
+		printf("Time(ms) : %.3f, Data sent(byte): %d\nData rate: %f (Kbytes/s)\n", ti, (int)len, rt);
+	}
+	tiSum = tiSum / 10.0;
+	rtSum = rtSum / 10.0;
+	printf("OVERALL: Time(ms) : %.3f, Data sent(byte): %d\nData rate: %f (Kbytes/s)\n", tiSum, (int)len, rtSum);
 
 	close(sockfd);
 	fclose(fp);
