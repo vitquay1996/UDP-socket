@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 	}
 	tiSum = 0;
 	rtSum = 0;
-	for (i=0; i< 9; i++) {
+	for (i=0; i< 10; i++) {
 		ti = str_cli(fp, sockfd, (struct sockaddr *)&ser_addr, sizeof(struct sockaddr_in), &len);                       //perform the transmission and receiving
 		rt = (len/(float)ti);                                         //caculate the average transmission rate
 		tiSum += ti;
